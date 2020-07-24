@@ -1,4 +1,6 @@
-import com.aventstack.extentreports.testng.listener.ExtentITestListenerClassAdapter;
+package smokeTests;
+
+import com.aventstack.extentreports.testng.listener.ExtentIReporterSuiteClassListenerAdapter;
 import com.google.gson.Gson;
 import data.Note;
 import io.restassured.http.ContentType;
@@ -11,12 +13,13 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
-@Listeners(ExtentITestListenerClassAdapter.class)
+
+@Listeners(ExtentIReporterSuiteClassListenerAdapter.class)
 @SpringBootTest
-public class ApiTesting {
-    Gson gson = new Gson();
+public class Invoice {
     final static String ROOT_URI = "https://jsonplaceholder.typicode.com";
     final static String NOTE_REGEX = "\\{(\\r|\\n)  \"userId\": [0-9],\\n  \"id\": [0-9],\\n  \"title\": \"(.*)\",\\n  \"completed\": (false|true)\\n\\}";
+    Gson gson = new Gson();
     private String NOTE_PATTERN = "{\"useridid\":%s,\"title\":\"%s\"\"completed\":%s}";
 
     @AfterMethod
@@ -49,7 +52,7 @@ public class ApiTesting {
     }
 
     @Test
-    public void getNoteWithNonExistentId_ShouldReturn404(){
+    public void getNoteWithNonExistentId_ShouldReturn404() {
         when().get(ROOT_URI + "/posts/101").then().statusCode(404);
     }
 }
